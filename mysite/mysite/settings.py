@@ -31,6 +31,7 @@ ALLOWED_HOSTS = ['192.168.1.40','alt.gameoneyt.com']
 # Application definition
 
 INSTALLED_APPS = [
+    'calculator.apps.CalculatorConfig',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
