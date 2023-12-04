@@ -3,7 +3,7 @@ from django.http import HttpResponse, JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 import json
 import hashlib
-from calculator.models import User
+from calculator.models import User, Note
 # Create your views here.
 def hello(request, number):
     print(request)
@@ -52,4 +52,11 @@ def login(request):
         
     except:
         return HttpResponse("Wrong username or password!", status=418)
+
+def get_notes(request):
+    notes = Note.objects.all()
+    notes_data=[]
+    for note in notes:
+        notes_data.append((note.user.username, note.content))
+    return JsonResponse({"notes": notes_data})
         
