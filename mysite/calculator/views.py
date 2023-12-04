@@ -58,6 +58,7 @@ def get_notes(request):
     
     data = json.loads(request.body)
     username = data["username"]
+    min_length = data.get("min_length", 0)
     password = hashlib.sha256(data["password"].encode("utf-8")).hexdigest()
     
     try:
@@ -69,6 +70,7 @@ def get_notes(request):
     notes = Note.objects.filter(user=user)
     notes_data=[]
     for note in notes:
-        notes_data.append((note.content))
+        if note.is_longer_than(min_length):
+            notes_data.append((note.content))
     return JsonResponse({"notes": notes_data})
         

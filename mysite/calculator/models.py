@@ -13,3 +13,6 @@ class Note(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     def __str__(self) -> str:
         return f"{self.user.username} - {self.content}"
+    
+    def is_longer_than(self, min_length):
+        return len(self.content) >= int(min_length)
