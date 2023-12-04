@@ -46,6 +46,8 @@ def login(request):
     password = hashlib.sha256(data["password"].encode("utf-8")).hexdigest()
     try:
         user = User.objects.get(username=username, password=password)
+        user.login_count += 1
+        user.save()
         return HttpResponse("Logged successfully!", status=200)
         
     except:
