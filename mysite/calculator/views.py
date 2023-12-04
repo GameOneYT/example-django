@@ -53,10 +53,22 @@ def login(request):
     except:
         return HttpResponse("Wrong username or password!", status=418)
 
+@csrf_exempt
 def get_notes(request):
-    notes = Note.objects.all()
+    
+    data = json.loads(request.body)
+    username = data["username"]
+    password = hashlib.sha256(data["password"].encode("utf-8")).hexdigest()
+    
+    try:
+        user = User.objects.get(username=username, password=password)
+        
+    except:
+        return HttpResponse("Wrong username or password!", status=418)
+    
+    notes = Note.objects.filter(user=user)
     notes_data=[]
     for note in notes:
-        notes_data.append((note.user.username, note.content))
+        notes_data.append((note.content))
     return JsonResponse({"notes": notes_data})
         
